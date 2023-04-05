@@ -1,15 +1,57 @@
 <script setup>
-  import { ref } from 'vue'
-  const showModal = ref(false)
+import { ref } from 'vue'
+const showModal = ref(false)
+const newNote = ref("")
+const allNotes = ref([])
+
+const createNote = () => {
+  function getRandomPastelColor() {
+    // Set the minimum and maximum values for the RGB components of the color
+    const min = 100;
+    const max = 200;
+
+    // Generate random values for the RGB components within the specified range
+    const red = Math.floor(Math.random() * (max - min + 1)) + min;
+    const green = Math.floor(Math.random() * (max - min + 1)) + min;
+    const blue = Math.floor(Math.random() * (max - min + 1)) + min;
+
+    // Convert the RGB values to a hexadecimal color code
+    const color = '#' + ((1 << 24) + (red << 16) + (green << 8) + blue).toString(16).slice(1);
+
+    // Return the color code
+    return color;
+  }
+
+  allNotes.value.push({
+    id: Math.random() * 1000000,
+    text: newNote.value,
+    date: new Date(),
+    backgroundColor: getRandomPastelColor()
+  })
+
+  showModal.value = false
+  newNote.value = ""
+}
+
+const getFormaterDate = (note) => {
+  let day = note.date.getDate()
+  let mm = note.date.getMonth() + 1
+  let yy = note.date.getFullYear()
+
+  day = day < 10 ? `0${day}` : day
+  mm = mm < 10 ? `0${mm}` : mm
+
+  return `${day}/${mm}/${yy}`
+}
 </script>
 
 <template>
   <main>
     <div v-if="showModal" class="overlay">
       <div class="modal">
-        <textarea name="notes" id="notes" cols="30" rows="10"></textarea>
-        <button>Add Note</button>
-        <button @click="showModal=false" class="close">Close</button>
+        <textarea v-model="newNote" name="notes" id="notes" cols="30" rows="10"></textarea>
+        <button @click="createNote()">Add Note</button>
+        <button @click="showModal = false" class="close">Close</button>
       </div>
     </div>
     <div class="container">
@@ -19,10 +61,9 @@
       </header>
 
       <div class="cards-container">
-        <div class="card">
-          <p class="main-text">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nam adipisci veniam provident hic
-            molestias accusamus!</p>
-          <p class="date">20/04/2003</p>
+        <div v-for="note in allNotes" :key="note.id" class="card" :style="{backgroundColor: note.backgroundColor}">
+          <p class="main-text">{{ note.text }}</p>
+          <p class="date">{{ getFormaterDate(note) }}</p>
         </div>
       </div>
     </div>
@@ -82,15 +123,15 @@ header button {
   margin-right: 20px;
   margin-bottom: 20px;
   cursor: pointer;
+  color: black;
 }
 
 .main-text {
-  color: #f5f5f5;
   font-size: 1.1rem;
 }
 
 .date {
-  color: #f5f5f5;
+  /* color: #f5f5f5; */
   font-weight: bold;
 }
 
