@@ -1,16 +1,21 @@
+<script setup>
+  import { ref } from 'vue'
+  const showModal = ref(false)
+</script>
+
 <template>
   <main>
-    <!-- <div class="overlay">
+    <div v-if="showModal" class="overlay">
       <div class="modal">
         <textarea name="notes" id="notes" cols="30" rows="10"></textarea>
         <button>Add Note</button>
-        <button class="close">Close</button>
+        <button @click="showModal=false" class="close">Close</button>
       </div>
-    </div> -->
+    </div>
     <div class="container">
       <header>
         <h1>Notes</h1>
-        <button>+</button>
+        <button @click="showModal = true">+</button>
       </header>
 
       <div class="cards-container">
@@ -111,13 +116,13 @@ header button {
   justify-content: space-between;
 }
 
-.modal textarea{
+.modal textarea {
   border-radius: 15px;
   padding: 20px;
   font-size: 1.2rem;
 }
 
-.modal button{
+.modal button {
   border-radius: 15px;
   padding: 10px 20px;
   font-size: 20px;
@@ -129,7 +134,7 @@ header button {
   margin-top: 15px;
 }
 
-.close{
+.close {
   background-color: rgb(161, 12, 12) !important;
 }
 </style>
