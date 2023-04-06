@@ -1,28 +1,47 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import faker from 'faker';
+
 const showModal = ref(false)
 const newNote = ref("")
 const allNotes = ref([])
+const errorMessage = ref("")
+
+function generateNotes(count) {
+  const notes = [];
+  for (let i = 0; i < count; i++) {
+    const note = {
+      id: faker.random.uuid(),
+      text: faker.lorem.sentence(),
+      backgroundColor: faker.internet.color(),
+      date: faker.date.recent()
+    };
+    notes.push(note);
+  }
+
+  return notes;
+}
+
+onMounted(() => {
+  allNotes.value = generateNotes(10);
+});
 
 const createNote = () => {
+  if (newNote.value.length < 10) {
+    errorMessage.value = "Please enter a note with more than 9 characters"
+    return
+  }
+
   function getRandomPastelColor() {
-    // Set the minimum and maximum values for the RGB components of the color
-    const min = 100;
-    const max = 200;
-
-    // Generate random values for the RGB components within the specified range
-    const red = Math.floor(Math.random() * (max - min + 1)) + min;
-    const green = Math.floor(Math.random() * (max - min + 1)) + min;
-    const blue = Math.floor(Math.random() * (max - min + 1)) + min;
-
-    // Convert the RGB values to a hexadecimal color code
-    const color = '#' + ((1 << 24) + (red << 16) + (green << 8) + blue).toString(16).slice(1);
-
-    // Return the color code
+    var letters = '0123456789ABCDEF'.split('');
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
     return color;
   }
 
-  allNotes.value.push({
+  allNotes.value.unshift({
     id: Math.random() * 1000000,
     text: newNote.value,
     date: new Date(),
@@ -49,7 +68,8 @@ const getFormaterDate = (note) => {
   <main>
     <div v-if="showModal" class="overlay">
       <div class="modal">
-        <textarea v-model="newNote" name="notes" id="notes" cols="30" rows="10"></textarea>
+        <textarea v-model.trim="newNote" name="notes" id="notes" cols="30" rows="10"></textarea>
+        <p class="error" v-show="errorMessage">{{ errorMessage }}</p>
         <button @click="createNote()">Add Note</button>
         <button @click="showModal = false" class="close">Close</button>
       </div>
@@ -61,7 +81,7 @@ const getFormaterDate = (note) => {
       </header>
 
       <div class="cards-container">
-        <div v-for="note in allNotes" :key="note.id" class="card" :style="{backgroundColor: note.backgroundColor}">
+        <div v-for="note in allNotes" :key="note.id" class="card" :style="{ backgroundColor: note.backgroundColor }">
           <p class="main-text">{{ note.text }}</p>
           <p class="date">{{ getFormaterDate(note) }}</p>
         </div>
@@ -123,7 +143,7 @@ header button {
   margin-right: 20px;
   margin-bottom: 20px;
   cursor: pointer;
-  color: black;
+  color: #f5f5f5;
 }
 
 .main-text {
@@ -177,5 +197,11 @@ header button {
 
 .close {
   background-color: rgb(161, 12, 12) !important;
+}
+
+.error {
+  color: red;
+  transition: all 0.3s ease-in-out;
+  animation: error 0.3s ease-in-out;
 }
 </style>
