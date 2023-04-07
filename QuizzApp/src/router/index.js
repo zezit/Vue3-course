@@ -12,7 +12,7 @@ const routes = createRouter({
         {
             path: "/quiz/:id",
             name: "Quiz",
-            component: () => import("../views/CardView.vue")
+            component: () => import("../views/QuizView.vue")
         }
     ]
 })
