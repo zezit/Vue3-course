@@ -1,5 +1,6 @@
 <script setup>
 import { ref, watch } from "vue"
+import gsap from "gsap"
 
 import data from "../data/quizzes.json"
 import Card from "../components/Card.vue"
@@ -14,6 +15,12 @@ watch(search, () => {
             includes(search.value.toLowerCase()))
 })
 
+const enterAnimation = (element) => {
+    gsap.fromTo(element,
+        { opacity: 0, y: "-100px" },
+        { opacity: 1, y: 0, duration: 0.2, delay: element.dataset.index * 0.2 })
+}
+
 </script>
 
 <template>
@@ -25,7 +32,9 @@ watch(search, () => {
             </header>
 
             <div class="options-container">
-                <Card v-for="quizz in quizzes" :key="quizz.id" :quizz="quizz" />
+                <TransitionGroup appear @before-enter="enterAnimation">
+                    <Card v-for="(quizz, index) in quizzes" :data-index="index" :key="quizz.id" :quizz="quizz" />
+                </TransitionGroup>
             </div>
         </div>
     </main>
@@ -65,5 +74,16 @@ header input {
     display: flex;
     flex-wrap: wrap;
     margin-top: 40px;
+}
+
+/* card animation redering */
+
+.card-enter-from {
+    opacity: 0;
+    transform: translateY(-100px);
+}
+
+.card-enter-active {
+    transition: all 0.15s ease-in;
 }
 </style>
