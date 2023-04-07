@@ -1,14 +1,19 @@
 <script setup>
 import { defineProps } from 'vue';
+import { RouterLink, useRouter } from "vue-router";
 
 const { quizz } = defineProps(['quizz']);
+const router = useRouter()
 
+const goToQuiz = () => {
+    router.push(`/quiz/${quizz.id}`)
+}
 </script>
 
 <template >
-    <div class="card">
+    <div @click="goToQuiz" class="link-card card">
         <img :src="quizz.img">
-        <dv class="card-text">
+        <div class="card-text">
             <h2>{{ quizz.name }}</h2>
             <p>
                 {{ quizz.questions.length }}
@@ -16,12 +21,14 @@ const { quizz } = defineProps(['quizz']);
                     "questions" :
                     "question" }}
             </p>
-        </dv>
+        </div>
     </div>
 </template>
 
 <style scoped>
 .card {
+    text-decoration: none;
+    color: inherit;
     margin-right: 30px;
     margin-bottom: 30px;
     overflow: hidden;
