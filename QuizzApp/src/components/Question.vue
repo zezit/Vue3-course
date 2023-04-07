@@ -12,11 +12,14 @@ const emitSelectedOption = (isCorrect) => {
 </script>
 
 <template>
-    <div class="question-container">
-        <h1 class="question">{{ question.text }}</h1>
-    </div>
-    <div class="options-container">
-        <Option v-for="option in question.options" :key="option.id" :option="option" @click="emitSelectedOption(option.isCorrect)" />
+    <div>
+        <div class="question-container">
+            <h1 class="question">{{ question.text }}</h1>
+        </div>
+        <div class="options-container">
+            <Option v-for="option in question.options" :key="option.id" :option="option"
+                @click="emitSelectedOption(option.isCorrect)" />
+        </div>
     </div>
 </template>
 

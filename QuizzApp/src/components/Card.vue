@@ -1,6 +1,6 @@
 <script setup>
 import { defineProps } from 'vue';
-import { RouterLink, useRouter } from "vue-router";
+import { useRouter } from "vue-router";
 
 const { quizz } = defineProps(['quizz']);
 const router = useRouter()

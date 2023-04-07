@@ -1,20 +1,27 @@
 <script setup>
 import { defineProps } from 'vue';
+import { useRouter } from "vue-router";
 
 const { totalCorrect, totalQuestions } = defineProps(['totalCorrect', 'totalQuestions']);
+const router = useRouter()
 
+const goToHome = () => {
+    router.push(`/`)
+}
 </script>
 
 <template>
-    <div class="results">
-        <p>Your results...</p>
-        <h1>
-            {{ totalCorrect }}/{{ totalQuestions }}
-        </h1>
-    </div>
+    <div>
+        <div class="results">
+            <p>Your results...</p>
+            <h1>
+                {{ totalCorrect }}/{{ totalQuestions }}
+            </h1>
+        </div>
 
-    <div class="button">
-        <p>Home</p>
+        <div class="button" @click="goToHome">
+            <p>Home</p>
+        </div>
     </div>
 </template>
 
@@ -35,7 +42,7 @@ h1 {
     animation: text-animation 500ms ease-in-out;
 }
 
-.button{
+.button {
     width: 200px;
     height: 50px;
     background-color: bisque;
@@ -47,7 +54,7 @@ h1 {
     cursor: pointer;
 }
 
-.button:hover{
+.button:hover {
     background-color: #f5f5f5;
 }
 
@@ -58,6 +65,12 @@ h1 {
 
     100% {
         font-size: 80px;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    .button {
+        color: #595959;
     }
 }
 </style>

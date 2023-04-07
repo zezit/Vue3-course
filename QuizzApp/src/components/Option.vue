@@ -46,4 +46,10 @@ const { option } = defineProps(['option']);
     padding: 0 20px;
     border-radius: 15px;
 }
+
+@media (prefers-color-scheme: dark) {
+    .option {
+        color: #595959;
+    }
+}
 </style>
