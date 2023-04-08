@@ -1,5 +1,6 @@
 <script setup>
 import { defineProps, defineEmits } from 'vue';
+import gsap from "gsap"
 
 import Option from '../components/Option.vue'
 
@@ -9,6 +10,13 @@ const emit = defineEmits(['selectedOption']);
 const emitSelectedOption = (isCorrect) => {
     emit('selectedOption', isCorrect);
 }
+
+const enterAnimation = (element) => {
+    console.log(element)
+    gsap.fromTo(element,
+        { opacity: 0, x: "-100px" },
+        { opacity: 1, x: 0, duration: 5, delay: element.dataset.index * 0.2 })
+}
 </script>
 
 <template>
@@ -17,8 +25,10 @@ const emitSelectedOption = (isCorrect) => {
             <h1 class="question">{{ question.text }}</h1>
         </div>
         <div class="options-container">
-            <Option v-for="option in question.options" :key="option.id" :option="option"
-                @click="emitSelectedOption(option.isCorrect)" />
+            <TransitionGroup @before-enter="enterAnimation">
+                <Option v-for="(option, index) in question.options" :data-index="index" :key="option.id" :option="option"
+                    @click="emitSelectedOption(option.isCorrect)" />
+            </TransitionGroup>
         </div>
     </div>
 </template>
