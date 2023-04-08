@@ -15,7 +15,7 @@ const enterAnimation = (element) => {
     console.log(element)
     gsap.fromTo(element,
         { opacity: 0, x: "-100px" },
-        { opacity: 1, x: 0, duration: 5, delay: element.dataset.index * 0.2 })
+        { opacity: 1, x: 0, duration: 0.3, delay: element.dataset.index * 0.2 })
 }
 </script>
 

@@ -18,7 +18,7 @@ watch(search, () => {
 const enterAnimation = (element) => {
     gsap.fromTo(element,
         { opacity: 0, y: "-100px" },
-        { opacity: 1, y: 0, duration: 0.2, delay: element.dataset.index * 0.2 })
+        { opacity: 1, y: 0, duration: 0.3, delay: element.dataset.index * 0.3 })
 }
 
 </script>
