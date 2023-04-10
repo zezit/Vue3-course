@@ -8,22 +8,23 @@ const apiUrl = 'https://rickandmortyapi.com/api';
 const pageLoad = ref(1)
 const characters = ref(null)
 
-const next9 = () => `${pageLoad.value},${pageLoad.value + 1},${pageLoad.value + 2},${pageLoad.value + 3},${pageLoad.value + 4},${pageLoad.value + 5},${pageLoad.value + 6},${pageLoad.value + 7},${pageLoad.value + 8}`
+const next8 = () => `${pageLoad.value},${pageLoad.value + 1},${pageLoad.value + 2},${pageLoad.value + 3},${pageLoad.value + 4},${pageLoad.value + 5},${pageLoad.value + 6},${pageLoad.value + 7}`
 
-const response = await axios.get(`${apiUrl}/character/${next9()}`);
+const response = await axios.get(`${apiUrl}/character/${next8()}`);
 characters.value = response.data;
 
 watch(pageLoad, async () => {
-    const response = await axios.get(`${apiUrl}/character/${next9()}`);
+    const response = await axios.get(`${apiUrl}/character/${next8()}`);
     characters.value = response.data;
 })
 
 const nextPage = () => {
-    pageLoad.value = pageLoad.value + 9
+    pageLoad.value = pageLoad.value + 8
 }
 
 const prevPage = () => {
-    pageLoad.value = pageLoad.value - 9
+    if (pageLoad.value <= 9) return
+    pageLoad.value = pageLoad.value - 8
 }
 
 </script>
@@ -31,7 +32,15 @@ const prevPage = () => {
 <template>
     <div class="container">
         <div class="cards">
-            <Card v-for="character in characters" :name="character.name" :image="character.image" :location="character.location.name"/>
+            <Card v-for="character in characters" :key="character.id" :name="character.name" :image="character.image"
+                :location="character.location.name" />
+        </div>
+
+        <div class="button-container">
+            <!-- less then symbol -->
+            <button @click="prevPage">&lt;</button>
+            <!-- greater then symbol -->
+            <button @click="nextPage">&gt;</button>
         </div>
     </div>
 </template>
@@ -58,6 +67,7 @@ const prevPage = () => {
 }
 
 .button-container {
+    user-select: none;
     display: flex;
     justify-content: center;
     padding-top: 30px
