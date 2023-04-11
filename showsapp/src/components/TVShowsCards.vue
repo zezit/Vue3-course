@@ -4,26 +4,28 @@ import axios from 'axios';
 
 import Card from './Card.vue';
 
-const apiUrl = ref('https://api.tvmaze.com/shows')
+const apiUrl = ref('https://www.episodate.com/api/most-popular')
 
-const pageNum = ref(0)
-const showId = ref(0)
-const characters = ref(null)
+const pageNum = ref(1)
+const tvShows = ref(null)
 
-onMounted(
-    async () => {
-        const resp = await axios.get(`${apiUrl.value}?page=${pageNum.value}`)
-        characters.value = resp
-    }
-)
+onMounted(async () => {
+    const response = await axios.get(`${apiUrl.value}?page=${pageNum.value}`)
+    tvShows.value = response.data.tv_shows
+})
+
+watch(pageNum, async () => {
+    const response = await axios.get(`${apiUrl.value}?page=${pageNum.value}`)
+    tvShows.value = response.data.tv_shows
+})
 
 const nextPage = () => {
-    pageLoad.value = pageLoad.value + 8
+    pageNum.value = pageNum.value + 1
 }
 
 const prevPage = () => {
-    if (pageLoad.value <= 9) return
-    pageLoad.value = pageLoad.value - 8
+    if (pageNum.value <= 1) return
+    pageNum.value = pageNum.value - 1
 }
 
 </script>
@@ -31,21 +33,22 @@ const prevPage = () => {
 <template>
     <div class="container">
         <div class="cards">
-            <!-- <Card v-for="character in characters" :key="character.id" :name="character.name" :image="character.image"
-                                                        :location="character.location.name" /> -->
+            <Card v-for="show in tvShows" :key="show.id" :name="show.name" :image="show.image_thumbnail_path"
+                :location="show.network" />
         </div>
-
         <div class="button-container">
             <!-- less then symbol -->
             <button @click="prevPage">&lt;</button>
             <!-- greater then symbol -->
             <button @click="nextPage">&gt;</button>
         </div>
+
     </div>
 </template>
 
 <style scoped>
 .container {
+    height: 100%;
     background-color: rgb(27, 26, 26);
     padding: 30px
 }

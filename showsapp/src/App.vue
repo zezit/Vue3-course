@@ -16,7 +16,7 @@ const showTVShows = ref(true)
         <p @click="showTVShows = false">Rick and Morty</p>
       </div>
     </div>
-    
+
     <Suspense v-if="!showTVShows">
       <template #default>
         <RandMCards />
