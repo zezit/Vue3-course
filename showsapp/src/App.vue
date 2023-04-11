@@ -1,13 +1,23 @@
 <script setup>
+import { ref } from 'vue';
 import RandMCards from './components/RandMCards.vue';
+import TVShowsCards from './components/TVShowsCards.vue';
+
+const showTVShows = ref(true)
 </script>
     
 <template>
   <main>
     <div class="hero">
-      <h1>Rick and Morty</h1>
+      <h1 v-if="!showTVShows">Rick and Morty</h1>
+      <h1 v-else>TV Shows</h1>
+      <div class="list">
+        <p @click="showTVShows = true">TV Shows</p>
+        <p @click="showTVShows = false">Rick and Morty</p>
+      </div>
     </div>
-    <Suspense>
+    
+    <Suspense v-if="!showTVShows">
       <template #default>
         <RandMCards />
       </template>
@@ -15,6 +25,8 @@ import RandMCards from './components/RandMCards.vue';
         <div>Loading...</div>
       </template>
     </Suspense>
+
+    <TVShowsCards v-else />
   </main>
 </template>
 
@@ -40,6 +52,21 @@ import RandMCards from './components/RandMCards.vue';
 }
 
 .hero p {
+  padding: 3px;
   cursor: pointer;
+}
+
+.list {
+  display: flex;
+  gap: 10px;
+  font-size: 1.4rem;
+  font-weight: bold;
+  align-items: center;
+  justify-content: center;
+}
+
+.list p:hover {
+  background-color: #eee;
+  border-radius: 5px;
 }
 </style>
