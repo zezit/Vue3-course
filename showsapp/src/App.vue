@@ -18,20 +18,39 @@ const showTVShows = ref(true)
       </div>
     </div>
 
-    <Suspense v-if="!showTVShows">
-      <template #default>
-        <RandMCards />
-      </template>
-      <template #fallback>
-        <div class="spinner">
-          <n-spin size="large" />
+    <KeepAlive>
+      <Component :is="
+        showTVShows ?
+          <TVShowsCards />
+          :
+          <Suspense>
+          <template #default >
+          <RandMCards />
+          < /template>
+          < template #fallback >
+            <div class=" spinner">
+        <n-spin size="large" />
         </div>
       </template>
-    </Suspense>
+      </Suspense>
+      "
+      >
+    </Component>
+  </KeepAlive>
 
-    <TVShowsCards v-else />
-  </main>
-</template>
+  <!-- <Suspense v-if="!showTVShows">
+      <template #default>
+        <RandMCards />
+              </template>
+              <template #fallback>
+                <div class="spinner">
+                  <n-spin size="large" />
+                </div>
+              </template>
+            </Suspense>
+
+            <TVShowsCards v-else /> -->
+</main></template>
 
 <style scoped>
 .hero {
