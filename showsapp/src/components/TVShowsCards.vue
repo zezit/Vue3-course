@@ -32,17 +32,22 @@ const prevPage = () => {
         
 <template>
     <div class="container">
-        <div class="cards">
-            <Card v-for="show in tvShows" :key="show.id" :name="show.name" :image="show.image_thumbnail_path"
-                :location="show.network" />
-        </div>
-        <div class="button-container">
-            <!-- less then symbol -->
-            <button @click="prevPage">&lt;</button>
-            <!-- greater then symbol -->
-            <button @click="nextPage">&gt;</button>
+        <div v-if="tvShows">
+            <div class="cards">
+                <Card v-for="show in tvShows" :key="show.id" :name="show.name" :image="show.image_thumbnail_path"
+                    :location="show.network" />
+            </div>
+            <div class="button-container">
+                <!-- less then symbol -->
+                <button @click="prevPage">&lt;</button>
+                <!-- greater then symbol -->
+                <button @click="nextPage">&gt;</button>
+            </div>
         </div>
 
+        <div v-else class="spinner">
+          <n-spin size="large" />
+        </div>
     </div>
 </template>
 
@@ -82,5 +87,13 @@ const prevPage = () => {
     border-radius: 100%;
     margin: 0 5px;
     cursor: pointer;
+}
+
+.spinner {
+  height: 700px;
+  background-color: rgb(27, 26, 26);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>

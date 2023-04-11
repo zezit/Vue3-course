@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue';
+
 import RandMCards from './components/RandMCards.vue';
 import TVShowsCards from './components/TVShowsCards.vue';
 
@@ -22,7 +23,9 @@ const showTVShows = ref(true)
         <RandMCards />
       </template>
       <template #fallback>
-        <div>Loading...</div>
+        <div class="spinner">
+          <n-spin size="large" />
+        </div>
       </template>
     </Suspense>
 
@@ -68,5 +71,13 @@ const showTVShows = ref(true)
 .list p:hover {
   background-color: #eee;
   border-radius: 5px;
+}
+
+.spinner {
+  height: 700px;
+  background-color: rgb(27, 26, 26);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>
