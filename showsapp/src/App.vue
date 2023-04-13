@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 
-import RandMCards from './components/RandMCards.vue';
+import RandMCardsSuspense from './components/RandMCardsSuspense.vue';
 import TVShowsCards from './components/TVShowsCards.vue';
 
 const showTVShows = ref(true)
@@ -18,18 +18,9 @@ const showTVShows = ref(true)
       </div>
     </div>
 
-    <Suspense v-if="!showTVShows">
-      <template #default>
-        <RandMCards />
-      </template>
-      <template #fallback>
-        <div class="spinner">
-          <n-spin size="large" />
-        </div>
-      </template>
-    </Suspense>
-
-    <TVShowsCards v-else />
+    <KeepAlive>
+      <Component :is="!showTVShows ? RandMCardsSuspense : TVShowsCards"/>
+    </KeepAlive>
   </main>
 </template>
 
